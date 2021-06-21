@@ -16,7 +16,7 @@
       <a class="nav-link" href="/">메인</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/money">돈뻥</a>
+      <a class="nav-link" href="/money">가위바위보</a>
     </li>
     
     {% if session['email'] %}
@@ -36,14 +36,16 @@
   </ul>
 </nav>
 <div class="container">
-<h2>Show Me The Money</h2>
-<form action="/show" method="POST">
-  <label for="money">돈을 입력하시오</label><br>
-  <input type="text" id="money" name="money" value="">
-  <input type="submit" value="쇼미머니">
+<h2>컴퓨터와 가위바위보 하여 돈을 벌어 봐요</h2>
+<form action="/free" method="POST">
+  <label for="rock">가위, 바위, 보 중에 하나를 입력하세요</label>
+  <input type="text" id="rock" name="rock" placeholder="가위,바위,보"><br>
+  <label for="rock">배팅액 </label>
+  <input type="text"  size = "5" id="bt" name="bt"placeholder="10000">
+  <input type="submit" value="결과 확인">
 </form> 
 
-<p>돈을 입력해서 버튼을 누르면 어떤일이 벌어질까?</p>
+<p></p>
 </div>
 </body>
 </html>

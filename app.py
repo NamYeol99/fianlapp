@@ -1,7 +1,7 @@
 from werkzeug.utils import redirect
-import ddb
+import ddb,random
 from flask import Flask,render_template ,request, redirect, session, sessions
-from hello import money_pung,idpw_check
+from hello import money_pung,idpw_check,rock
 app = Flask(__name__)
 
 #로그인 처리(세션에 필요)
@@ -56,6 +56,45 @@ def money():
     else:
         return redirect('/signin')
 
+
+
+@app.route('/free', methods=['GET', 'POST'])
+def free():
+    if request.method == 'GET':
+        return "GET 으로 들어온 페이지"
+    else:
+        # form 으로 전달된 데이터를 받아서 뻥튀기 해줘야 함
+        rock = request.form['rock']
+        list = ["가위", "바위", "보"]
+        com = random.choice(list)
+
+        bt = request.form['bt']
+        bt1 = money_pung(int(bt))
+        
+        if rock == "가위" :
+            if com == "가위" :
+                return render_template("free.html",rock="비겼습니다",user="가위",comp = "가위")
+            elif com == "바위" :
+                return render_template("free.html",rock="졌습니다",user="가위",comp = "바위")
+            else :
+                return render_template("free.html",rock="이겼습니다",user= "가위",comp = "보",bt = bt1)
+        elif rock == "바위" :
+            if com == "가위" :
+                return render_template("free.html",rock="이겼습니다",user= "바위",comp = "가위",bt = bt1)
+            elif com == "바위" :
+               return render_template("free.html",rock="비겼습니다" ,user = "바위", comp = "바위")
+            else :
+               return render_template("free.html",rock="졌습니다",user="바위",comp = "보" )
+        else :
+            if com == "가위" :
+                return render_template("free.html",rock="졌습니다",user="보",comp = "가위" )
+            elif com == "바위" :
+                return render_template("free.html",rock="이겼습니다",user= "보",comp = "바위" ,bt = bt1)
+            else :
+                return render_template("free.html",rock="비겼습니다",user="보",comp = "보" )
+        
+
+
 @app.route('/show', methods=['GET', 'POST'])
 def show():
     if request.method == 'GET':
@@ -69,7 +108,12 @@ def show():
         return render_template("show.html",money=im)
         #return "당신의 능력을 보여줘~ 얍<br><b>{}</b>원 드립니다".format(im)
         #return "당신의 능력을 보여줘~ 얍<br><b>{}</b>원 드립니다".format(money_pung(int(money)))
-
+@app.route('/game')
+def game():
+    if 'email' in session:
+        return render_template("game.html")
+    else:
+        return redirect('/signin')
 @app.route('/showmoney')
 def showmoney():
     return render_template("smoney.html")
@@ -78,5 +122,5 @@ def showmoney():
 def hellohtml():
     return render_template("hello.html")
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
